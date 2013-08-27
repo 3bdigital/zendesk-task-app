@@ -1,0 +1,21 @@
+{
+  "app": {
+    "description": "Zugriff auf als Lesezeichen gespeicherte Tickets von unserer iPad- und iPhone-App"
+  },
+  "fetch": {
+    "fail": "Fehler beim Abrufen von Lesezeichen",
+    "try_again": "Erneut versuchen"
+  },
+  "add": {
+    "done": "Als Lesezeichen gespeichertes Ticket #{{id}}",
+    "failed": "Fehler beim Speichern des Tickets #{{id}} als Lesezeichen"
+  },
+  "destroy": {
+    "done": "Lesezeichen gelöscht",
+    "failed": "Fehler beim Löschen des Lesezeichens"
+  },
+  "bookmark_this_ticket": "Dieses Ticket als Lesezeichen speichern",
+  "delete_bookmark": "Lesezeichen löschen",
+  "loading": "Laden",
+  "none": "Keine Lesezeichen"
+}
