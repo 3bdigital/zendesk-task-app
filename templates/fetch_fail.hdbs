@@ -1,2 +1,0 @@
-<p>{{t "fetch.fail"}}</p>
-<p><a href="#" data-role='reload-bookmarks'>{{t "fetch.try_again"}}</a></p>

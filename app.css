@@ -1,18 +1,7 @@
-ul {
-  margin-left: 0;
+.add-task-container {
+	padding: 20px 0;
 }
 
-footer {
-  display: none;
-}
-
-li {
-  & + li { margin-top: 0.4em; }
-
-          .destroy { visibility: hidden; }
-  &:hover .destroy { visibility: visible; }
-}
-
-.btn.bookmark {
-  margin-top: 10px;
+.task-inactive {
+	text-decoration: line-through;
 }

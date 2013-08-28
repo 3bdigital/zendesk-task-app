@@ -1,0 +1,2 @@
+<p>{{t "fetch.fail"}}</p>
+<p><a href="#" data-role='reload-tasks'>{{t "fetch.try_again"}}</a></p>

@@ -1,20 +1,16 @@
 <div>
-  <ul>
-    {{#bookmarks}}
-      <li data-bookmark-id="{{id}}">
-        <a href="#/bookmarks/{{id}}/destroy" class="destroy" rel="nofollow" title="{{t "delete_bookmark"}}">
-          <i class='icon-remove-circle'></i>
-        </a>
-        <a href="#/tickets/{{ticket.nice_id}}">{{ticket.subject}}</a>
-      </li>
-    {{/bookmarks}}
-  </ul>
+	<ul class="unstyled">
+		{{#tasks}}
+	  	<li><input type="checkbox"> {{task}}</li>
+	  	{{/tasks}}
+	</ul>
 
-  {{#unless bookmarks.length}}
-    <p>{{t "none"}}}</p>
-  {{/unless}}
+	{{#unless tasks.length}}
+		<p>{{t "none"}}}</p>
+	{{/unless}}
 
-  {{#if ticketIsBookmarkable}}
-    <button class="btn btn-inverse bookmark">{{t "bookmark_this_ticket"}}</button>
-  {{/if}}
+	<div class="add-task-container">
+		<input type="text" id="newtask">
+		<button class="addtask btn btn-success">Add</button>
+	</p>
 </div>

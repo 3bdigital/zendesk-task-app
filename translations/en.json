@@ -1,21 +1,15 @@
 {
   "app": {
-    "description": "Access bookmarked tickets from our iPad & iPhone app"
+    "description": "Add tasks to a ticket"
   },
   "fetch": {
-    "fail": "Error retrieving bookmarks",
+    "fail": "Error retrieving tasks",
     "try_again": "Try again"
   },
   "add": {
-    "done": "Bookmarked ticket #{{id}}",
-    "failed": "Failed to bookmark ticket #{{id}}"
+    "done": "Added task to ticket #{{id}}",
+    "failed": "Failed to add task to ticket #{{id}}"
   },
-  "destroy": {
-    "done": "Bookmark deleted",
-    "failed": "Failed to delete bookmark"
-  },
-  "bookmark_this_ticket": "Bookmark this ticket",
-  "delete_bookmark": "Delete bookmark",
   "loading": "Loading",
-  "none": "No bookmarks"
+  "none": "No tasks"
 }

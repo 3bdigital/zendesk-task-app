@@ -6,115 +6,89 @@
     defaultState: 'loading',
 
     requests: {
-      fetchBookmarks: {
-        url: '/api/v1/bookmarks.json'
-      },
+      addTask: function(task) {
+        this.tasks.push({'active': true, 'task': task});
 
-      addBookmark: function() {
         return {
-          url: '/api/v1/bookmarks.json',
-          type: 'POST',
+          url: '/api/v2/tickets/' + this.ticket().id() + '.json',
+          type: 'PUT',
           data: {
-            ticket_id: this.ticket().id()
+            'ticket': {
+              'metadata': { 'tasks': this.tasks },
+              'comment':  { 'body': 'Added task: ' + task, 'public': false }
+            }
           }
         };
       },
-
-      destroyBookmark: function(toDestroy) {
+      getTasks: function(task) {
         return {
-          url: helpers.fmt('/api/v1/bookmarks/%@.json', toDestroy),
-          type: 'POST',
-          data: { _method: 'DELETE' }
+          url: '/api/v2/tickets/' + this.ticket().id() + '/audits.json',
+          type: 'GET'
         };
       }
     },
 
     events: {
-      'app.activated': 'requestBookmarks',
+      'app.activated': 'requestTasks',
 
-      'fetchBookmarks.done': function(data) {
-        this.renderBookmarks((data || {}).bookmarks);
+      'getTasks.done': function(data) {
+        this.renderTasks((data || {}).audits);
       },
 
-      'fetchBookmarks.fail': function(data) {
+      'getTasks.fail': function(data) {
         this.switchTo('fetch_fail');
       },
 
-      'addBookmark.done': function() {
+      'addTask.done': function() {
         services.notify(this.I18n.t('add.done', { id: this.ticket().id() }));
       },
 
-      'addBookmark.fail': function() {
+      'addTask.fail': function() {
         services.notify(this.I18n.t('add.failed', { id: this.ticket().id() }), 'error');
       },
 
-      'addBookmark.always': function() {
-        this.ajax('fetchBookmarks');
+      'addTask.always': function() {
+        this.ajax('getTasks');
       },
 
-      'click .bookmark': function(event) {
+      'click .addtask': function(event) {
         event.preventDefault();
-        this.ajax('addBookmark');
-      },
-
-      'click .destroy': 'destroyBookmark',
-
-      'click a[data-role="reload-bookmarks"]': 'requestBookmarks'
+        var task = this.$('#newtask').val();
+        this.ajax('addTask', task);
+      }
     },
 
-    renderBookmarks: function(bookmarks) {
-      this.bookmarks = bookmarks;
-      this.switchTo('list', {
-        bookmarks:            this.bookmarks,
-        ticketIsBookmarkable: this.ticketIsBookmarkable()
-      });
-    },
+    renderTasks: function(audits) {
+      // get the last audit with tasks metadata
+      this.tasks = [];
+      console.log(audits);
+      for(var i = audits.length; i > 0; i--) {
+        var j = i - 1;
+        if('custom' in audits[j].metadata) {
+          if('tasks' in audits[j].metadata.custom) {
+            var t = audits[j].metadata.custom.tasks;
 
-    ticketIsBookmarkable: function() {
-      var status = this.ticket().status() || STATUS_CLOSED;
-      if ( status == STATUS_CLOSED ) { return false; }
+            // convert to array
+            for (var key in t) {
+              this.tasks.push(t[key]);
+            }
 
-      var ticketID = this.ticket().id(),
-          alreadyBookmarked = _.any(this.bookmarks, function(b) {
-            return b.ticket.nice_id === ticketID;
-          });
-
-      return !alreadyBookmarked;
-    },
-
-    requestBookmarks: function() {
-      this.ajax('fetchBookmarks');
-    },
-
-    // Get the bookmark ID for a click event within a bookmark <li>
-    bookmarkID: function(event) {
-      return this.$(event.target)
-                 .closest('[data-bookmark-id]')
-                 .data('bookmark-id');
-    },
-
-    destroyBookmark: function(event) {
-      event.preventDefault();
-      var toDestroy = this.bookmarkID(event);
-      if (!toDestroy) {
-        return;
+            // got latest tasks, break the loop
+            i = 0;
+          }
+        }
       }
 
-      var self = this;
-      this.ajax('destroyBookmark', toDestroy).done(function() {
-        self.removeDestroyedBookmark(toDestroy);
-      }).fail(function() {
-        services.notify(self.I18n.t('destroy.failed'), 'error');
+      console.log(this.tasks);
+
+      this.switchTo('list', {
+        tasks: this.tasks
       });
     },
 
-    removeDestroyedBookmark: function(toDestroy) {
-      this.renderBookmarks(_.reject(this.bookmarks, function(b) {
-        return b.id === toDestroy;
-      }));
-      services.notify(this.I18n.t('destroy.done'));
+    requestTasks: function() {
+      this.ajax('getTasks');
     }
-
   };
 
 }());
