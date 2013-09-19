@@ -10,6 +10,10 @@
     "done": "Added task to ticket #{{id}}",
     "failed": "Failed to add task to ticket #{{id}}"
   },
+  "update": {
+    "done": "Updated tasks for ticket #{{id}}",
+    "failed": "Failed to update tasks for ticket #{{id}}"
+  },
   "loading": "Loading",
   "none": "No tasks"
 }
